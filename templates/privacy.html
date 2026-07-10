@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — Spendly{% endblock %}
+
+{% block content %}
+<section class="legal">
+    <div class="legal-inner">
+        <h1 class="legal-title">Privacy Policy</h1>
+        <p class="legal-updated">Last updated: July 8, 2026</p>
+
+        <p class="legal-intro">
+            Your privacy matters. This Privacy Policy explains what information
+            Spendly collects, how we use it, and the choices you have. By using
+            Spendly, you agree to the practices described below.
+        </p>
+
+        <h2 class="legal-heading">1. Data We Collect</h2>
+        <p class="legal-body">
+            When you create an account, we collect basic account information such
+            as your name, email address, and a hashed password. When you use
+            Spendly, we store the expense entries, categories, dates, amounts, and
+            any notes or descriptions you choose to add.
+        </p>
+        <p class="legal-body">
+            We also collect limited technical information — such as your IP
+            address, browser type, and device identifiers — to keep your account
+            secure, prevent abuse, and diagnose service issues.
+        </p>
+
+        <h2 class="legal-heading">2. How We Use Your Data</h2>
+        <p class="legal-body">
+            We use the information you provide to operate Spendly's core features:
+            logging expenses, generating summaries and category breakdowns, and
+            showing your history across sessions and devices. Account
+            information is used to authenticate you and to communicate important
+            service notices.
+        </p>
+        <p class="legal-body">
+            We do not sell your personal data. We do not use the contents of your
+            expense records for advertising, profiling, or any commercial purpose
+            unrelated to operating the service.
+        </p>
+
+        <h2 class="legal-heading">3. Data Storage and Security</h2>
+        <p class="legal-body">
+            Your data is stored on secure servers and protected with industry
+            standard safeguards, including encrypted connections (HTTPS) in
+            transit and access controls at rest. Passwords are stored as
+            cryptographic hashes; no employee or contractor has routine access to
+            your raw expense entries.
+        </p>
+        <p class="legal-body">
+            While we work hard to protect your information, no system is
+            perfectly secure. You are responsible for keeping your account
+            credentials confidential and for using a strong, unique password.
+        </p>
+
+        <h2 class="legal-heading">4. Third-Party Services</h2>
+        <p class="legal-body">
+            Spendly relies on a small set of trusted third parties to operate —
+            for example, a database or cloud hosting provider, and an email
+            service for account notifications. These providers only receive the
+            information needed to perform their function and are bound by
+            confidentiality and security obligations.
+        </p>
+        <p class="legal-body">
+            We do not embed third-party advertising trackers, analytics pixels,
+            or social media scripts in Spendly. If this changes in the future,
+            we will update this policy and notify you before it takes effect.
+        </p>
+
+        <h2 class="legal-heading">5. Your Choices and Rights</h2>
+        <p class="legal-body">
+            You can review, update, or delete the data in your account at any
+            time through your account settings. You may also request a full
+            export of your data or close your account; doing so will permanently
+            delete the personal information we hold about you, except where we
+            are required to retain certain records for legal or accounting
+            purposes.
+        </p>
+
+        <h2 class="legal-heading">6. Changes to This Policy</h2>
+        <p class="legal-body">
+            We may update this Privacy Policy to reflect changes in our service,
+            legal requirements, or business practices. When we make material
+            changes, we will update the "Last updated" date at the top of this
+            page and, where appropriate, notify you through the service.
+        </p>
+
+        <h2 class="legal-heading">7. Contact Us</h2>
+        <p class="legal-body">
+            If you have any questions about this Privacy Policy, or wish to
+            exercise your data rights, please reach out to us through the
+            support channels listed in the app.
+        </p>
+
+        <div class="legal-actions">
+            <a href="{{ url_for('landing') }}" class="btn-ghost">Back to home</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
