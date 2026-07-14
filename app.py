@@ -1,6 +1,15 @@
 from flask import Flask, render_template
 
+from database.db import get_db, init_db, seed_db
+
 app = Flask(__name__)
+
+# Bootstrap the database before any route is served. ``init_db`` is
+# idempotent (CREATE TABLE IF NOT EXISTS); ``seed_db`` is a no-op once
+# the demo user exists, so it is safe to run on every startup.
+with app.app_context():
+    init_db()
+    seed_db()
 
 
 # ------------------------------------------------------------------ #
