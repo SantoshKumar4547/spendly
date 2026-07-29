@@ -48,6 +48,9 @@ _MIN_PASSWORD_LEN = 8
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
+
     if request.method == "POST":
         # ``.get(key, "")`` so a missing field trips the "all required"
         # branch instead of raising ``KeyError`` and 500ing the user.
@@ -105,18 +108,19 @@ def register():
         finally:
             conn.close()
 
-        # Sign the user in immediately and bounce to /profile. The
-        # /profile route is still a Step 4 stub, so a successful
-        # registration currently lands on its placeholder text — that
-        # is the expected behaviour at this point in the roadmap.
+        # Sign the user in immediately and bounce to /profile.
         session["user_id"] = cur.lastrowid
-        return redirect(url_for("login"))
+        session["user_name"] = name
+        return redirect(url_for("profile"))
 
     return render_template("register.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
+
     if request.method == "POST":
         # ``.get(key, "")`` so a missing field trips the credential
         # check below (which flashes a generic error) rather than
@@ -133,9 +137,8 @@ def login():
             return render_template("login.html"), 200
 
         session["user_id"] = row["id"]
-        # No dashboard route yet — spec §3 redirects to landing until
-        # one exists. Do not invent a target here.
-        return redirect(url_for("landing"))
+        session["user_name"] = row["name"]
+        return redirect(url_for("profile"))
 
     return render_template("login.html")
 
@@ -164,7 +167,53 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    # Static/hardcoded per spec §04 — no DB queries in this step. Values
+    # mirror database/db.py's SAMPLE_EXPENSES so the numbers already match
+    # what Step 5's real queries will produce once wired up.
+    user = {
+        "name": "Demo User",
+        "email": "demo@spendly.com",
+        "initials": "DU",
+        "member_since": "January 2026",
+    }
+
+    stats = [
+        {"label": "Total spent", "value": "₹4,246.50", "icon": "wallet"},
+        {"label": "Transactions", "value": "8", "icon": "receipt"},
+        {"label": "Top category", "value": "Bills", "icon": "trophy"},
+    ]
+
+    transactions = [
+        {"date": "14 Jul 2026", "description": "Miscellaneous cash spend", "category": "Other", "category_slug": "other", "amount": "₹120.00"},
+        {"date": "13 Jul 2026", "description": "T-shirt from local market", "category": "Shopping", "category_slug": "shopping", "amount": "₹999.00"},
+        {"date": "12 Jul 2026", "description": "Weekly groceries run", "category": "Bills", "category_slug": "bills", "amount": "₹612.00"},
+        {"date": "11 Jul 2026", "description": "Auto rickshaw to client meeting", "category": "Transport", "category_slug": "transport", "amount": "₹85.50"},
+        {"date": "10 Jul 2026", "description": "Lunch at the office canteen", "category": "Food", "category_slug": "food", "amount": "₹250.00"},
+        {"date": "9 Jul 2026", "description": "Movie tickets", "category": "Entertainment", "category_slug": "entertainment", "amount": "₹350.00"},
+        {"date": "8 Jul 2026", "description": "Pharmacy — vitamins and first-aid", "category": "Health", "category_slug": "health", "amount": "₹380.00"},
+        {"date": "5 Jul 2026", "description": "Electricity bill", "category": "Bills", "category_slug": "bills", "amount": "₹1,450.00"},
+    ]
+
+    category_breakdown = [
+        {"name": "Bills", "slug": "bills", "total": "₹2,062.00", "percent": 49, "bar_width_class": "profile-bar-w-50"},
+        {"name": "Shopping", "slug": "shopping", "total": "₹999.00", "percent": 24, "bar_width_class": "profile-bar-w-25"},
+        {"name": "Health", "slug": "health", "total": "₹380.00", "percent": 9, "bar_width_class": "profile-bar-w-10"},
+        {"name": "Entertainment", "slug": "entertainment", "total": "₹350.00", "percent": 8, "bar_width_class": "profile-bar-w-10"},
+        {"name": "Food", "slug": "food", "total": "₹250.00", "percent": 6, "bar_width_class": "profile-bar-w-5"},
+        {"name": "Other", "slug": "other", "total": "₹120.00", "percent": 3, "bar_width_class": "profile-bar-w-5"},
+        {"name": "Transport", "slug": "transport", "total": "₹85.50", "percent": 2, "bar_width_class": "profile-bar-w-5"},
+    ]
+
+    return render_template(
+        "profile.html",
+        user=user,
+        stats=stats,
+        transactions=transactions,
+        category_breakdown=category_breakdown,
+    )
 
 
 @app.route("/expenses/add")

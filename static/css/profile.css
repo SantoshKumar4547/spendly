@@ -1,0 +1,244 @@
+/* ------------------------------------------------------------------ */
+/* Layout                                                              */
+/* ------------------------------------------------------------------ */
+
+.profile-section { padding: 3rem 2rem 4rem; }
+
+.profile-container {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* 1. User info card                                                   */
+/* ------------------------------------------------------------------ */
+
+.profile-user-card { display: flex; align-items: center; gap: 1.25rem; }
+
+.profile-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+}
+
+.profile-name { font-family: var(--font-display); font-size: 1.5rem; color: var(--ink); }
+
+.profile-email { color: var(--ink-muted); font-size: 0.95rem; margin-top: 0.15rem; }
+
+.profile-member-since {
+    color: var(--ink-muted);
+    font-size: 0.85rem;
+    margin-top: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.profile-inline-icon { width: 14px; height: 14px; }
+
+/* ------------------------------------------------------------------ */
+/* 2. Summary stats row                                                */
+/* ------------------------------------------------------------------ */
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.profile-stat {
+    background: var(--paper-warm);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+}
+
+.profile-stat-icon { width: 20px; height: 20px; color: var(--accent); margin-bottom: 0.6rem; }
+
+.profile-stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.4rem;
+}
+
+.profile-stat-value {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared section heading                                              */
+/* ------------------------------------------------------------------ */
+
+.profile-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+}
+
+.profile-section-icon { width: 20px; height: 20px; color: var(--accent); }
+
+/* ------------------------------------------------------------------ */
+/* 3. Transaction history table                                       */
+/* ------------------------------------------------------------------ */
+
+.profile-table-wrap { overflow-x: auto; }
+
+.profile-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+
+.profile-table th {
+    text-align: left;
+    color: var(--ink-muted);
+    font-weight: 500;
+    font-size: 0.8rem;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--ink-soft);
+}
+
+.profile-table tbody tr:hover { background: var(--paper-warm); }
+
+.profile-table-amount-col { text-align: right; }
+
+.profile-amount { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 500; }
+
+/* Category badge — shared color system with the breakdown bars below */
+.profile-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.profile-badge::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    flex: none;
+}
+
+.profile-badge-food::before { background: var(--cat-food); }
+.profile-badge-transport::before { background: var(--cat-transport); }
+.profile-badge-bills::before { background: var(--cat-bills); }
+.profile-badge-health::before { background: var(--cat-health); }
+.profile-badge-entertainment::before { background: var(--cat-entertainment); }
+.profile-badge-shopping::before { background: var(--cat-shopping); }
+.profile-badge-other::before { background: var(--cat-other); }
+
+/* ------------------------------------------------------------------ */
+/* 4. Category breakdown                                               */
+/* ------------------------------------------------------------------ */
+
+.profile-breakdown { display: flex; flex-direction: column; gap: 0.9rem; }
+
+.profile-breakdown-row {
+    display: grid;
+    grid-template-columns: minmax(110px, auto) 1fr auto;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-breakdown-name { font-size: 0.9rem; color: var(--ink-soft); }
+
+.profile-breakdown-track {
+    height: 10px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.profile-breakdown-bar { height: 100%; border-radius: 999px; }
+
+.profile-bar-food { background: var(--cat-food); }
+.profile-bar-transport { background: var(--cat-transport); }
+.profile-bar-bills { background: var(--cat-bills); }
+.profile-bar-health { background: var(--cat-health); }
+.profile-bar-entertainment { background: var(--cat-entertainment); }
+.profile-bar-shopping { background: var(--cat-shopping); }
+.profile-bar-other { background: var(--cat-other); }
+
+/* Discrete 5%-step width ladder — avoids inline style="width:...%".
+   Full ladder defined so a future DB-driven percentage can reuse this
+   file unchanged (rounded to nearest step). */
+.profile-bar-w-5   { width: 5%; }
+.profile-bar-w-10  { width: 10%; }
+.profile-bar-w-15  { width: 15%; }
+.profile-bar-w-20  { width: 20%; }
+.profile-bar-w-25  { width: 25%; }
+.profile-bar-w-30  { width: 30%; }
+.profile-bar-w-35  { width: 35%; }
+.profile-bar-w-40  { width: 40%; }
+.profile-bar-w-45  { width: 45%; }
+.profile-bar-w-50  { width: 50%; }
+.profile-bar-w-55  { width: 55%; }
+.profile-bar-w-60  { width: 60%; }
+.profile-bar-w-65  { width: 65%; }
+.profile-bar-w-70  { width: 70%; }
+.profile-bar-w-75  { width: 75%; }
+.profile-bar-w-80  { width: 80%; }
+.profile-bar-w-85  { width: 85%; }
+.profile-bar-w-90  { width: 90%; }
+.profile-bar-w-95  { width: 95%; }
+.profile-bar-w-100 { width: 100%; }
+
+.profile-breakdown-total {
+    font-size: 0.9rem;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+.profile-breakdown-percent { color: var(--ink-muted); font-size: 0.8rem; }
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                          */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+    .profile-stats { grid-template-columns: 1fr; }
+    .profile-user-card { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 600px) {
+    .profile-section { padding: 2rem 1rem 3rem; }
+    .profile-card { padding: 1.25rem; }
+    .profile-breakdown-row { grid-template-columns: 90px 1fr; }
+    .profile-breakdown-total { grid-column: 1 / -1; text-align: left; }
+}

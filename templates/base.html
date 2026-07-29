@@ -19,8 +19,14 @@
                 <span class="brand-name">Spendly</span>
             </a>
             <div class="nav-links">
+                {% if session.user_id %}
+                <span class="nav-user"><i data-lucide="user-round"></i>{{ session.user_name }}</span>
+                <a href="{{ url_for('profile') }}">Profile</a>
+                <a href="{{ url_for('logout') }}">Log out</a>
+                {% else %}
                 <a href="{{ url_for('login') }}">Sign in</a>
                 <a href="{{ url_for('register') }}" class="nav-cta">Get started</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -34,11 +40,12 @@
             <span class="brand-icon">◈</span>
             <span class="footer-name">Spendly</span>
             <p class="footer-copy">Track every rupee. Own your finances.</p>
-            <a href="/terms">Term and Condition</a>
-            <a href="/privacy">Privacy Policy</a>
+            <a href="{{ url_for('terms') }}">Term and Condition</a>
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>

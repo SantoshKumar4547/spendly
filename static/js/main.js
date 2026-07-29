@@ -61,3 +61,12 @@
     }
   });
 })();
+
+// Lucide icons — initialize after the DOM (and the lucide CDN script) is ready
+(function () {
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  });
+})();
