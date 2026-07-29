@@ -9,13 +9,13 @@ block content %}
     </div>
 
     <div class="auth-card">
-      {% if error %}
-      <div class="auth-error">{{ error }}</div>
-      {% endif %}
+      {% for category, message in get_flashed_messages(with_categories=true) %}
+      <div class="auth-error">{{ message }}</div>
+      {% endfor %}
 
       <form
         method="POST"
-        action="/login"
+        action="{{ url_for('login') }}"
       >
         <div class="form-group">
           <label for="email">Email address</label>
