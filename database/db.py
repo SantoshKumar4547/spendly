@@ -43,6 +43,27 @@ def get_db() -> sqlite3.Connection:
 
 
 # ------------------------------------------------------------------ #
+# Queries                                                              #
+# ------------------------------------------------------------------ #
+
+def get_user_by_email(email: str) -> sqlite3.Row | None:
+    """Return the user row for ``email`` or ``None`` if not found.
+
+    Used by the login route to look up the stored ``password_hash``
+    before calling ``check_password_hash``. Parameterised query — no
+    f-string interpolation into SQL.
+    """
+    conn = get_db()
+    try:
+        return conn.execute(
+            "SELECT id, name, email, password_hash FROM users WHERE email = ?",
+            (email,),
+        ).fetchone()
+    finally:
+        conn.close()
+
+
+# ------------------------------------------------------------------ #
 # Schema                                                               #
 # ------------------------------------------------------------------ #
 

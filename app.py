@@ -4,15 +4,16 @@ import sqlite3
 
 from flask import (
     Flask,
+    flash,
     redirect,
     render_template,
     request,
     session,
     url_for,
 )
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
-from database.db import get_db, init_db, seed_db
+from database.db import get_db, get_user_by_email, init_db, seed_db
 
 app = Flask(__name__)
 
@@ -114,8 +115,28 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        # ``.get(key, "")`` so a missing field trips the credential
+        # check below (which flashes a generic error) rather than
+        # raising ``KeyError`` and 500ing the user. Email is stripped
+        # to match the register flow and the stored value.
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+
+        # Same single error for every failure mode so the form never
+        # leaks whether the email exists or the password is wrong.
+        row = get_user_by_email(email)
+        if row is None or not check_password_hash(row["password_hash"], password):
+            flash("Invalid email or password.", "error")
+            return render_template("login.html"), 200
+
+        session["user_id"] = row["id"]
+        # No dashboard route yet — spec §3 redirects to landing until
+        # one exists. Do not invent a target here.
+        return redirect(url_for("landing"))
+
     return render_template("login.html")
 
 
@@ -135,7 +156,10 @@ def privacy():
 
 @app.route("/logout")
 def logout():
-    return "Logout — coming in Step 3"
+    # Public per spec — no auth guard. Idempotent: clearing an empty
+    # session is a no-op, so visiting /logout twice in a row is safe.
+    session.clear()
+    return redirect(url_for("landing"))
 
 
 @app.route("/profile")
